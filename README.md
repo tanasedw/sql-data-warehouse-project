@@ -13,4 +13,14 @@ docs. is provided
 
 ---
 
+BI: customer behavior, product performance, sales trend
+
+---
+
+license: MIT license, free to use, modify, shared
+
+---
+about me
+
+Volks
 
