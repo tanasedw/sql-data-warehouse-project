@@ -4,7 +4,9 @@ udemy: build DW with sql server, etl, data model, analytic
 ---
 
 requirement: build DW using sql server.  
-specification:  
+
+specification:
+
 data source are erp and crm as csv.  
 data quality is clean it.  
 integration is combine 2 source to be 1.  
