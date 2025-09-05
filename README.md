@@ -3,7 +3,9 @@ udemy: build DW with sql server, etl, data model, analytic
 
 ---
 
-requirement: build DW using sql server.  
+requirement:
+
+build DW using sql server.  
 
 specification:
 
