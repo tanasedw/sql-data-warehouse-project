@@ -1,3 +1,13 @@
+insert into silver.crm_prd_info(
+prd_id
+,cat_id
+,prd_key
+,prd_nm
+,prd_cost
+,prd_line
+,prd_start_dt
+,prd_end_dt
+)
 SELECT [prd_id]
       ,replace(substring([prd_key],1,5), '-', '_') as cat_id
       ,substring([prd_key],7, len(prd_key)-6) as prd_key
@@ -10,5 +20,31 @@ SELECT [prd_id]
             else 'n/a'
         end as prd_line
       ,cast([prd_start_dt] as date) as prd_start_dt
-      ,cast(lead(prd_start_dt) over(partition by prd_key order by prd_start_dt)-1 as date) as prd_start_dt
-  FROM [bronze].[crm_prd_info]
+      ,cast(lead(prd_start_dt) over(partition by prd_key order by prd_start_dt)-1 as date) as prd_end_dt
+FROM [bronze].[crm_prd_info]
+
+
+---check null and duplicates
+SELECT 
+prd_id,
+count(*)
+FROM [DataWarehouse].[silver].[crm_prd_info]
+group by prd_id having count(*) > 1 or prd_id is null
+
+---check spces
+select prd_nm
+from [silver].[crm_prd_info]
+where prd_nm != trim(prd_nm)
+
+---check negative cost
+select prd_cost
+from [silver].[crm_prd_info]
+where prd_cost < 0 or prd_cost is null
+
+select distinct prd_line from silver.crm_prd_info
+
+---check invalid date order
+select 
+*
+from silver.crm_prd_info
+where prd_end_dt < prd_start_dt
