@@ -26,6 +26,9 @@ where cst_key != trim(cst_firstname)
 ---check unique
 select distinct cst_gndr from [DataWarehouse].[bronze].[crm_cust_info]
 
+
+------
+
 insert into silver.crm_cust_info(
 	cst_id,
 	cst_key,
@@ -54,6 +57,8 @@ FROM (SELECT
 ROW_NUMBER() over (partition by cst_id order by cst_create_date desc) as flag_last
 FROM [DataWarehouse].[bronze].[crm_cust_info]
 where cst_id is not null)t where flag_last = 1
+
+------
 
 
 ---check null and duplicates at silver
