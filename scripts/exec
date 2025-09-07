@@ -1,1 +1,2 @@
-
+exec bronze.load_layer
+exec silver.load_silver
