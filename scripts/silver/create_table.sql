@@ -38,9 +38,11 @@ create table silver.crm_sales_details(
 	dwh_create_date datetime2 default getdate()
 );
 
+if object_id('silver.erp_cust_az12', 'U') is not null
+	drop table silver.erp_cust_az12;
 create table silver.erp_cust_az12(
 	cid nvarchar(50),
-	bdate datetime,
+	bdate date,
 	gen nvarchar(50),
 	dwh_create_date datetime2 default getdate()
 );
