@@ -1,3 +1,5 @@
+truncate table silver.crm_prd_info;
+
 insert into silver.crm_prd_info(
 prd_id
 ,cat_id
