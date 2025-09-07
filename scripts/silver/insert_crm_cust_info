@@ -28,6 +28,7 @@ select distinct cst_gndr from [DataWarehouse].[bronze].[crm_cust_info]
 
 
 ------
+truncate table silver.crm_cust_info;
 
 insert into silver.crm_cust_info(
 	cst_id,
