@@ -24,6 +24,8 @@ FROM [DataWarehouse].[bronze].[erp_loc_a101]
 
 
 ---insert into
+truncate table [silver].[erp_loc_a101];
+
 insert into [silver].[erp_loc_a101](
 cid
 ,cntry
