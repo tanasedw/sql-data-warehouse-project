@@ -1,0 +1,31 @@
+
+---create view
+create view gold.fact_sales as
+SELECT [sls_ord_num] order_number
+      ,b.product_key
+      ,c.customer_key
+      ,[sls_ship_dt] ship_date
+      ,[sls_due_dt] due_date
+      ,[sls_sales] sales_amount
+      ,[sls_quantity] quantity
+      ,[sls_price] price
+  FROM [silver].[crm_sales_details] a
+  left join gold.dim_products b
+  on a.sls_prd_key = b.product_numbert
+  left join gold.dim_customers c
+  on a.sls_cust_id = c.customer_id
+
+  ---
+  select * from gold.fact_sales
+
+  ---quality check
+  select * from gold.fact_sales a
+  left join gold.dim_customers b
+  on a.customer_key = b.customer_key
+  left join gold.dim_products c
+  on a.product_key = c.product_key
+  where b.customer_key is null or c.product_key is null
+
+
+
+
