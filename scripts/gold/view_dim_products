@@ -1,1 +1,70 @@
+SELECT [prd_id]
+      ,[prd_key]
+      ,[prd_nm]
+      ,[cat_id]
+      ,b.[cat]
+      ,b.[subcat]
+      ,b.[maintenance]
+      ,[prd_cost]
+      ,[prd_line]
+      ,[prd_start_dt]
+  FROM [silver].[crm_prd_info] a
+  left join [silver].[erp_px_cat_g1v2] b
+  on a.cat_id = b.id
+  where prd_end_dt is null
 
+ ---check dup หลังจอย
+ select prd_key, count(*) from(
+ SELECT [prd_id]
+      ,[cat_id]
+      ,[prd_key]
+      ,[prd_nm]
+      ,[prd_cost]
+      ,[prd_line]
+      ,[prd_start_dt]
+      ,b.[cat]
+      ,b.[subcat]
+      ,b.[maintenance]
+  FROM [silver].[crm_prd_info] a
+  left join [silver].[erp_px_cat_g1v2] b
+  on a.cat_id = b.id
+  where prd_end_dt is null)t 
+  group by prd_key
+  having count(*)>1
+
+  --- rename nicely, add surrogate key
+  SELECT 
+      ROW_NUMBER() over (order by prd_start_dt, prd_key) as prd_key
+      ,[prd_id] product_id
+      ,[prd_key] product_number
+      ,[prd_nm] product_name
+      ,[cat_id] category_id
+      ,b.[cat] category
+      ,b.[subcat] subcategory
+      ,b.[maintenance]
+      ,[prd_cost] cost
+      ,[prd_line] product_line
+      ,[prd_start_dt] start_date
+  FROM [silver].[crm_prd_info] a
+  left join [silver].[erp_px_cat_g1v2] b
+  on a.cat_id = b.id
+  where prd_end_dt is null
+
+  ---create view
+  create view gold.dim_products as
+  SELECT 
+      ROW_NUMBER() over (order by prd_start_dt, prd_key) as prd_key
+      ,[prd_id] product_id
+      ,[prd_key] product_number
+      ,[prd_nm] product_name
+      ,[cat_id] category_id
+      ,b.[cat] category
+      ,b.[subcat] subcategory
+      ,b.[maintenance]
+      ,[prd_cost] cost
+      ,[prd_line] product_line
+      ,[prd_start_dt] start_date
+  FROM [silver].[crm_prd_info] a
+  left join [silver].[erp_px_cat_g1v2] b
+  on a.cat_id = b.id
+  where prd_end_dt is null
